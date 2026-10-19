@@ -58,7 +58,7 @@
 
 	<main>
 		<header>
-			<p class="eyebrow">Lesson 05 / Named snippets</p>
+			<p class="eyebrow">Общий layout</p>
 			<h1>{activeChat?.title ?? 'Select a chat'}</h1>
 			<p class="message-count" aria-live="polite">
 				{messageCount} {messageCount === 1 ? 'message' : 'messages'}
@@ -85,42 +85,23 @@
 
 	<aside class="lesson" aria-labelledby="lesson-title" lang="ru">
 		<p class="eyebrow">Сравниваем с React</p>
-		<h2 id="lesson-title">Именованные<br />snippets</h2>
+		<h2 id="lesson-title">Общий layout<br />и навигация</h2>
 		<dl>
-			<dt><code>{'{#snippet item(message)}'}</code></dt>
-			<dd>Именованный фрагмент шаблона с параметром. Объявлен внутри MessageList на странице и автоматически передаётся как prop item.</dd>
-			<dt><code>Snippet&lt;[Message]&gt;</code></dt>
-			<dd>Тип snippet, принимающего один аргумент Message. Квадратные скобки описывают кортеж аргументов, а не массив сообщений.</dd>
-			<dt><code>{'{@render item(message)}'}</code></dt>
-			<dd>MessageList передаёт текущее сообщение в шаблон страницы. Список отвечает за перебор и ключи, страница — за содержимое карточки.</dd>
-			<dt><code>Render props в React</code></dt>
-			<dd>Похожий API: {'renderItem={(message) => <p>{message.text}</p>}'}. В Svelte вместо функции с JSX используется snippet.</dd>
-			<dt><code>item и children</code></dt>
-			<dd>Именованный item выводит каждое сообщение. Остальная вложенная разметка по-прежнему становится children для пустого состояния.</dd>
+			<dt><code>src/routes/+layout.svelte</code></dt>
+			<dd>Оборачивает страницы / и /about. Аналог app/layout.tsx в Next.js, но без модели React Server Components.</dd>
+			<dt><code>{'{@render children()}'}</code></dt>
+			<dd>SvelteKit передаёт текущую страницу как snippet children. Общая навигация находится над ним.</dd>
+			<dt><code>&lt;a href="/about"&gt;</code></dt>
+			<dd>Обычная внутренняя ссылка. После гидратации SvelteKit выполняет клиентскую навигацию без отдельного Link-компонента.</dd>
+			<dt><code>Жизненный цикл</code></dt>
+			<dd>При клиентском переходе между этими страницами общий layout сохраняется. Компонент страницы сменяется; его локальный state не является постоянным хранилищем.</dd>
+			<dt><code>Общие стили</code></dt>
+			<dd>Глобальные базовые стили перенесены в layout, чтобы они работали и при прямом открытии /about.</dd>
 		</dl>
-		<div class="exercise">
-			<h3>Проверь себя</h3>
-			<p>Проследи путь данных: MessageList берёт message из массива → передаёт в item(message) → шаблон страницы выводит message.text.</p>
-			<p>Твоё упражнение: добавь второй параметр index. Обнови тип snippet и вызов в списке, затем выведи на странице «You · #1», «You · #2» и так далее.</p>
-		</div>
 	</aside>
 </div>
 
 <style>
-	:global(body) {
-		margin: 0;
-		background: #f5f6fa;
-		color: #202435;
-		font-family: system-ui, sans-serif;
-		line-height: 1.5;
-	}
-
-	:global(*) { box-sizing: border-box; }
-	:global(button), :global(input) { font: inherit; }
-	:global(button) { cursor: pointer; }
-	:global(button:disabled) { cursor: not-allowed; }
-	:global(:focus-visible) { outline: 3px solid #6954d9; outline-offset: 4px; }
-
 	.workspace { display: grid; grid-template-columns: 260px minmax(0, 1fr) 300px; min-height: 100dvh; }
 	.sidebar { padding: 32px 20px; background: #202435; color: #f5f6fa; }
 	.brand { color: inherit; text-decoration: none; font-size: 26px; font-weight: 800; }
@@ -140,9 +121,6 @@
 	.lesson h2 { font-size: 23px; line-height: 1.3; }
 	dt { margin-top: 24px; font-size: 13px; color: #6550bb; overflow-wrap: anywhere; }
 	dd { margin: 6px 0 0; color: #60697b; font-size: 13px; }
-	.exercise { margin-top: 32px; padding: 16px; border-radius: 12px; background: #f0edf9; font-size: 13px; }
-	.exercise h3 { margin-top: 0; }
-	.exercise p:last-child { margin-bottom: 0; }
 
 	@media (min-width: 1600px) {
 		.workspace { max-width: 1600px; margin: 0 auto; }
