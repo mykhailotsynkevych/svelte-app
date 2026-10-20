@@ -1,22 +1,15 @@
 <script lang="ts">
+	import { afterNavigate } from '$app/navigation';
 	import ChatList from '#lib/components/ChatList.svelte';
 	import MessageComposer from '#lib/components/MessageComposer.svelte';
 	import MessageList from '#lib/components/MessageList.svelte';
-	import type { Chat } from '#lib/types.js';
+	import { createChats } from '#lib/chats.js';
+	import type { PageProps } from './$types';
 
-	let chats = $state<Chat[]>([
-		{
-			id: 'svelte',
-			title: 'Learning Svelte 5',
-			messages: [{ id: 1, text: 'What is the difference between $state and useState?' }]
-		},
-		{
-			id: 'interview',
-			title: 'Interview preparation',
-			messages: []
-		}
-	]);
-	let activeChatId = $state('svelte');
+	let { data }: PageProps = $props();
+
+	let chats = $state(createChats());
+	let activeChatId = $derived(data.chatId);
 	let draft = $state('');
 	let nextMessageId = 2;
 
@@ -26,10 +19,9 @@
 	// Derived state for the total message count across all chats
 	let totalMessageCount = $derived(chats.reduce((sum, chat) => sum + chat.messages.length, 0));
 
-	function selectChat(id: string) {
-		activeChatId = id;
+	afterNavigate(() => {
 		draft = '';
-	}
+	});
 
 	function sendMessage() {
 		if (!activeChat || !draft.trim()) return;
@@ -40,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>Svelte Lab | Workspace</title>
+	<title>{activeChat?.title ?? 'Workspace'} | Svelte Lab</title>
 	<meta
 		name="description"
 		content="A local learning workspace for exploring Svelte 5 from a React background."
@@ -51,14 +43,14 @@
 	<aside class="sidebar">
 		<a class="brand" href="/">Svelte<span>Lab</span></a>
 		<p class="eyebrow">Your learning workspace</p>
-		<ChatList title="My Chats" {chats} {activeChatId} onSelect={selectChat} />
+		<ChatList title="My Chats" {chats} {activeChatId} />
 		<p class="local-note">Local demo. No AI, no API, no persistence. Reloading resets all messages.</p>
 		<p class="total-message-count">Total messages: {totalMessageCount}</p>
 	</aside>
 
 	<main>
 		<header>
-			<p class="eyebrow">Общий layout</p>
+			<p class="eyebrow">Загрузка и ошибки</p>
 			<h1>{activeChat?.title ?? 'Select a chat'}</h1>
 			<p class="message-count" aria-live="polite">
 				{messageCount} {messageCount === 1 ? 'message' : 'messages'}
@@ -85,18 +77,20 @@
 
 	<aside class="lesson" aria-labelledby="lesson-title" lang="ru">
 		<p class="eyebrow">Сравниваем с React</p>
-		<h2 id="lesson-title">Общий layout<br />и навигация</h2>
+		<h2 id="lesson-title">Серверная загрузка</h2>
 		<dl>
-			<dt><code>src/routes/+layout.svelte</code></dt>
-			<dd>Оборачивает страницы / и /about. Аналог app/layout.tsx в Next.js, но без модели React Server Components.</dd>
-			<dt><code>{'{@render children()}'}</code></dt>
-			<dd>SvelteKit передаёт текущую страницу как snippet children. Общая навигация находится над ним.</dd>
-			<dt><code>&lt;a href="/about"&gt;</code></dt>
-			<dd>Обычная внутренняя ссылка. После гидратации SvelteKit выполняет клиентскую навигацию без отдельного Link-компонента.</dd>
-			<dt><code>Жизненный цикл</code></dt>
-			<dd>При клиентском переходе между этими страницами общий layout сохраняется. Компонент страницы сменяется; его локальный state не является постоянным хранилищем.</dd>
-			<dt><code>Общие стили</code></dt>
-			<dd>Глобальные базовые стили перенесены в layout, чтобы они работали и при прямом открытии /about.</dd>
+			<dt><code>+page.server.ts</code></dt>
+			<dd>load выполняется только на сервере. Здесь проверяем chatId и возвращаем его странице.</dd>
+			<dt><code>PageServerLoad</code></dt>
+			<dd>Типизированная load получает params из URL. Возвращённый chatId приходит в страницу через data.</dd>
+			<dt><code>error(404, ...)</code></dt>
+			<dd>Неизвестный ID даёт HTTP 404, а не пустой список.</dd>
+			<dt><code>+error.svelte</code></dt>
+			<dd>Общая страница ошибки показывает статус и сообщение. Открой /chats/unknown, чтобы увидеть 404.</dd>
+			<dt><code>$app/state → navigating</code></dt>
+			<dd>В layout показывает, что клиентский переход ещё выполняется. При полной первой загрузке это не индикатор SSR.</dd>
+			<dt><code>Почему полоса может мелькнуть?</code></dt>
+			<dd>Локальная load очень быстрая и синхронная. Не добавляем искусственную задержку; на медленной сети индикатор будет заметнее.</dd>
 		</dl>
 	</aside>
 </div>
