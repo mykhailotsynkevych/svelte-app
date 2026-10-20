@@ -14,6 +14,7 @@
 	<a class="site-brand" href="/">Svelte Lab</a>
 	<nav aria-label="Основная навигация">
 		<a href="/">Workspace</a>
+		<a href="/forms">Forms</a>
 		<a href="/about">About Project</a>
 	</nav>
 </header>

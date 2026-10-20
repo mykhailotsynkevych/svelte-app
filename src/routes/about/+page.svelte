@@ -38,6 +38,7 @@
         <li>Universal <code>+page.ts</code> — может выполняться и на сервере, и в браузере; подходит для загрузки без серверных секретов.</li>
         <li><code>+error.svelte</code> и <code>$app/state</code> — показывают статус и сообщение ошибки, например 404 для неизвестного chatId.</li>
         <li><code>navigating</code> из <code>$app/state</code> — состояние незавершённого клиентского перехода; используется для общего индикатора навигации.</li>
+        <li>Form actions, <code>request.formData()</code>, <code>fail(400, ...)</code> и <code>use:enhance</code> — серверная валидация с сохранением введённых значений и отправкой без перезагрузки.</li>
         <li><code>$derived(data.chatId)</code> — отслеживает новый параметр при переиспользовании страницы; <code>afterNavigate</code> очищает черновик после перехода.</li>
       </ul>
     </section>
