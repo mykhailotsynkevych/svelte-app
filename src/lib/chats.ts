@@ -11,6 +11,11 @@ export function createChats(): Chat[] {
 			id: 'interview',
 			title: 'Interview preparation',
 			messages: []
+		},
+		{
+			id: 'routing',
+			title: 'Learning Routing',
+			messages: [{ id: 1, text: 'How do I set up routing in Svelte 5?' }]
 		}
 	];
 }

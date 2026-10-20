@@ -32,7 +32,7 @@
 </script>
 
 <svelte:head>
-	<title>{activeChat?.title ?? 'Workspace'} | Svelte Lab</title>
+	<title>{data.title} | Svelte Lab</title>
 	<meta
 		name="description"
 		content="A local learning workspace for exploring Svelte 5 from a React background."
@@ -51,7 +51,7 @@
 	<main>
 		<header>
 			<p class="eyebrow">Загрузка и ошибки</p>
-			<h1>{activeChat?.title ?? 'Select a chat'}</h1>
+			<h1>{data.title}</h1>
 			<p class="message-count" aria-live="polite">
 				{messageCount} {messageCount === 1 ? 'message' : 'messages'}
 			</p>
@@ -64,9 +64,7 @@
 			{/snippet}
 
 			<div class="empty-state">
-				{#if activeChat?.title}
-					<h2>{activeChat.title}</h2>
-				{/if}
+				<h2>{data.title}</h2>
 				<h2>A fresh conversation</h2>
 				<p>Send your first message and watch the counters update.</p>
 			</div>
@@ -80,9 +78,9 @@
 		<h2 id="lesson-title">Серверная загрузка</h2>
 		<dl>
 			<dt><code>+page.server.ts</code></dt>
-			<dd>load выполняется только на сервере. Здесь проверяем chatId и возвращаем его странице.</dd>
+			<dd>load выполняется только на сервере: находит чат по chatId и передаёт заголовок странице.</dd>
 			<dt><code>PageServerLoad</code></dt>
-			<dd>Типизированная load получает params из URL. Возвращённый chatId приходит в страницу через data.</dd>
+			<dd>Типизированная load получает params из URL. Возвращённые chatId и title приходят в страницу через data.</dd>
 			<dt><code>error(404, ...)</code></dt>
 			<dd>Неизвестный ID даёт HTTP 404, а не пустой список.</dd>
 			<dt><code>+error.svelte</code></dt>

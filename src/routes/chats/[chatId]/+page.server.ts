@@ -10,5 +10,5 @@ export const load: PageServerLoad = ({ params }) => {
 		error(404, 'Чат не найден');
 	}
 
-	return { chatId: chat.id };
+	return { chatId: chat.id, title: chat.title };
 };
