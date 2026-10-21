@@ -7,30 +7,31 @@
 </script>
 
 <svelte:head>
-	<title>Форма и серверная валидация | Svelte Lab</title>
+	<title>Formular und serverseitige Validierung | Svelte Lab</title>
 	<meta
 		name="description"
-		content="Учебная форма с серверной валидацией через SvelteKit form actions."
+		content="Ein Lernformular mit serverseitiger Validierung über SvelteKit Form Actions."
 	/>
 </svelte:head>
 
-<main class="form-page" lang="ru">
-	<a href="/chats/svelte">← Вернуться к чату</a>
+<main class="form-page" lang="de">
+	<a href="/chats/svelte">← Zurück zum Chat</a>
 	<p class="eyebrow">SvelteKit · form actions</p>
-	<h1>Форма с серверной валидацией</h1>
+	<h1>Formular mit serverseitiger Validierung</h1>
 	<p class="intro">
-		Форма отправляет обычный POST-запрос. Сервер проверяет имя и сообщение, затем возвращает
-		ошибки или подтверждение. Данные не сохраняются и не отправляются.
+		Das Formular sendet eine normale POST-Anfrage. Der Server überprüft Name und Nachricht und
+		gibt entweder Fehlermeldungen oder eine Bestätigung zurück. Die Daten werden weder gespeichert
+		noch versendet.
 	</p>
 
 	{#if form?.success}
 		<p class="success" role="status">
-			Сервер проверил форму: ошибок нет. Данные демонстрационные и не сохранены.
+			Der Server hat das Formular geprüft: Es gibt keine Fehler. Die Beispieldaten wurden nicht gespeichert.
 		</p>
 	{/if}
 
 	<form method="POST" action="?/validate" use:enhance>
-		<label for="name">Имя</label>
+		<label for="name">Name</label>
 		<input
 			id="name"
 			name="name"
@@ -46,7 +47,7 @@
 			<p class="error" id="name-error">{form.errors.name}</p>
 		{/if}
 
-		<label for="message">Сообщение</label>
+		<label for="message">Nachricht</label>
 		<textarea
 			id="message"
 			name="message"
@@ -61,16 +62,16 @@
 			<p class="error" id="message-error">{form.errors.message}</p>
 		{/if}
 
-		<button type="submit">Проверить на сервере</button>
+		<button type="submit">Auf dem Server prüfen</button>
 	</form>
 
 	<section class="concepts" aria-labelledby="concepts-title">
-		<h2 id="concepts-title">Что происходит</h2>
+		<h2 id="concepts-title">Was passiert?</h2>
 		<ol>
-			<li>HTML отправляет поля формы методом POST в action <code>validate</code>.</li>
-			<li><code>request.formData()</code> читает входные значения на сервере.</li>
-			<li><code>fail(400, ...)</code> возвращает значения и ошибки; страница снова показывает их рядом с полями.</li>
-			<li>При успехе action возвращает <code>success: true</code>. <code>use:enhance</code> улучшает отправку без перезагрузки, но HTML-форма работает и без JavaScript.</li>
+			<li>Das HTML-Formular sendet seine Felder per POST an die Action <code>validate</code>.</li>
+			<li><code>request.formData()</code> liest die übermittelten Werte auf dem Server aus.</li>
+			<li><code>fail(400, ...)</code> gibt die Werte und Fehler zurück; die Seite zeigt sie erneut neben den Feldern an.</li>
+			<li>Bei Erfolg gibt die Action <code>success: true</code> zurück. <code>use:enhance</code> ermöglicht das Absenden ohne Neuladen; das HTML-Formular funktioniert aber auch ohne JavaScript.</li>
 		</ol>
 	</section>
 </main>

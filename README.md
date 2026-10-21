@@ -1,10 +1,10 @@
 # Svelte Lab
 
-Учебный мини-workspace для перехода с React/Next.js на Svelte 5 + SvelteKit 3 + TypeScript.
-Используем Node 24 LTS. Версии Svelte и SvelteKit независимы.
-Данные чатов находятся в памяти: пока без API, AI и постоянного хранения.
+Ein kleines Lernprojekt für den Umstieg von React/Next.js auf Svelte 5, SvelteKit 3 und TypeScript.
+Verwendet wird Node 24 LTS. Svelte und SvelteKit haben unabhängige Versionsnummern.
+Die Chatdaten liegen nur im Arbeitsspeicher. Es gibt noch keine API, KI oder dauerhafte Speicherung.
 
-## Запуск
+## Starten
 
 ```sh
 nvm use
@@ -12,67 +12,70 @@ npm ci
 npm run dev -- --open
 ```
 
-Проверка типов и Svelte-диагностики: `npm run check`.
-Production-сборка: `npm run build`. Для деплоя нужен adapter под целевую среду.
+Typprüfung und Svelte-Diagnosen: `npm run check`.
+Produktionsbuild: `npm run build`. Für ein Deployment muss ein passender Adapter gewählt werden.
 
-## Что рассмотрели
+## Bisher behandelte Themen
 
-| Svelte / SvelteKit | Суть и сравнение с React / Next.js |
+| Svelte / SvelteKit | Bedeutung und Vergleich mit React / Next.js |
 | --- | --- |
-| `$state` | Реактивное состояние без setter. Обычные объекты и массивы глубоко реактивны, поэтому `messages.push(...)` обновляет UI. |
-| `$derived` | Вычисляемое значение с автоматическими зависимостями. Аналог вычисления при render; не требует отдельного state или эффекта. |
-| `$props()` | Типизированные props, значения по умолчанию и callbacks. Деструктуризация непосредственно `$props()` сохраняет реактивность. |
-| Callback props | Данные идут вниз, действия сообщаются родителю через функции — как lifting state up в React. |
-| `bind:value` | Двусторонняя привязка input вместо ручной связки `value` и `onChange`. |
-| `$bindable()` | Явно разрешает binding prop. `bind:draft` связывает черновик формы со state страницы без второй копии. |
-| `onclick`, `onsubmit` | Обработчики нативных событий. Для отмены стандартной отправки формы вызываем `preventDefault()`. |
-| `{#each ... (message.id)}` | Список со стабильным ключом, аналог `map` + `key`. Индекс используем для нумерации, а не идентификации. |
-| `children: Snippet` | Вложенная разметка как prop; вывод через `{@render children()}`. Похоже на React children, но это фрагмент шаблона, не `ReactNode`. |
-| Именованные snippets | `item(message, index)` задаёт шаблон сообщения, как render prop. `Snippet<[Message, number]>` описывает типы его аргументов. |
-| Scoped CSS | Стили относятся к разметке, объявленной в компоненте. Общие правила задаём через `:global`. |
-| Файловый routing | Папка задаёт сегмент URL, `+page.svelte` — страницу. Аналог `app/.../page.tsx` в Next.js. |
-| `<a href="/about">` | Внутренняя навигация без отдельного Link-компонента; после гидратации SvelteKit перехватывает подходящие ссылки. |
-| `<svelte:head>` | Заголовок вкладки и метаданные страницы. |
-| `+layout.svelte` | Общий каркас с текущей страницей в `children`. Общий layout сохраняется при клиентских переходах, но не при перезагрузке. |
-| `/chats/[chatId]` | Динамический маршрут: `params.chatId` содержит ID из URL. Главная `/` перенаправляет на `/chats/svelte`. |
-| `+page.server.ts` / `load` | Серверная функция ищет чат по URL и возвращает `{ chatId, title }` в prop `data`; неизвестный ID — HTTP 404 через `error()`. Код выполняется только на сервере. Возвращённые данные всё равно отправляются браузеру — секреты в `data` не включаем. |
-| `+page.ts` / universal `load` | Может выполняться на сервере или в браузере. Здесь корневая `/` перенаправляет пользователя на `/chats/svelte`; секретов и серверного доступа нет. |
-| `actions` в `+page.server.ts` | Обрабатывают POST формы на сервере. `request.formData()` читает отправленные поля, `fail(400, ...)` возвращает ошибки и введённые значения обратно странице. |
-| `use:enhance` | Прогрессивно улучшает обычную HTML-форму SvelteKit: отправляет её без перезагрузки при включённом JS. Без JS форма всё равно работает. |
-| `+error.svelte` | Страница ошибки читает реактивные `page.status` и `page.error` из `$app/state`. Ошибка `load` с HTTP 404 не маскируется пустым чатом. |
-| `navigating` из `$app/state` | Отражает выполняющуюся клиентскую навигацию. Подходит для тонкого общего progress-индикатора; не показывает первоначальный серверный рендер. |
-| `$derived(data.chatId)` | Выбор чата зависит от URL. SvelteKit переиспользует страницу при смене параметра и обновляет `data`; обычное начальное присваивание не отслеживало бы переходы. |
-| `afterNavigate` | Очищает черновик после навигации. Истории остаются локальным state страницы: смена chatId их сохраняет, перезагрузка или уход на `/about` — сбрасывает. |
+| `$state` | Reaktiver Zustand ohne Setter. Einfache Objekte und Arrays sind tief reaktiv; `messages.push(...)` aktualisiert daher die UI. |
+| `$derived` | Berechneter Wert mit automatisch erkannten Abhängigkeiten. Ähnlich einer Berechnung während des Renderns; kein zusätzlicher State oder Effect nötig. |
+| `$props()` | Typisierte Props, Standardwerte und Callbacks. Eine direkte Destrukturierung von `$props()` bleibt reaktiv. |
+| Callback-Props | Daten fließen nach unten, Aktionen über Funktionen zum Elternteil – ähnlich wie „Lifting State Up“ in React. |
+| `bind:value` | Zwei-Wege-Bindung eines Eingabefelds statt einer manuellen Kombination aus `value` und `onChange`. |
+| `$bindable()` | Erlaubt eine Bindung eines Props ausdrücklich. `bind:draft` verbindet den Formularentwurf mit dem State der Seite, ohne eine zweite Kopie anzulegen. |
+| `onclick`, `onsubmit` | Handler für native Events. `preventDefault()` verhindert das Standardverhalten beim Absenden eines Formulars. |
+| `{#each ... (message.id)}` | Liste mit stabilem Schlüssel, vergleichbar mit `map` und `key` in React. Der Index dient der Nummerierung, nicht als Identität. |
+| `children: Snippet` | Verschachteltes Markup als Prop, Ausgabe mit `{@render children()}`. Ähnelt React-Children, ist aber ein Template-Fragment und kein `ReactNode`. |
+| Benannte Snippets | `item(message, index)` definiert das Nachrichten-Template, ähnlich einem Render-Prop. `Snippet<[Message, number]>` typisiert seine Argumente. |
+| Scoped CSS | Styles gelten für das Markup der jeweiligen Komponente. Gemeinsame Regeln werden ausdrücklich mit `:global` definiert. |
+| File-based Routing | Der Ordner definiert den URL-Abschnitt, `+page.svelte` die Seite. Vergleichbar mit `app/.../page.tsx` im Next.js App Router. |
+| `<a href="/about">` | Interne Navigation ohne separate Link-Komponente. Nach der Hydrierung verarbeitet SvelteKit passende Links clientseitig. |
+| `<svelte:head>` | Seitentitel und Metadaten im Dokumentkopf. |
+| `+layout.svelte` | Gemeinsamer Seitenrahmen mit der aktuellen Seite in `children`. Das Layout bleibt bei clientseitiger Navigation erhalten, nicht aber nach einem Neuladen. |
+| `/chats/[chatId]` | Dynamische Route: `params.chatId` stammt aus der URL. `/` leitet zu `/chats/svelte` weiter. |
+| `+page.server.ts` / `load` | Serverfunktion sucht einen Chat und gibt `{ chatId, title }` als `data` zurück. Unbekannte IDs führen mit `error()` zu HTTP 404. Die Funktion läuft nur auf dem Server; zurückgegebene Daten sind trotzdem im Browser sichtbar. |
+| `+page.ts` / Universal-`load` | Kann auf dem Server oder im Browser laufen. Hier leitet die Startseite `/` zu `/chats/svelte` weiter; serverseitige Geheimnisse gehören nicht hierher. |
+| Form Actions in `+page.server.ts` | Verarbeiten Formular-POSTs auf dem Server. `request.formData()` liest die Eingaben; `fail(400, ...)` gibt Fehler und Eingabewerte an die Seite zurück. |
+| `use:enhance` | Verbessert ein normales HTML-Formular von SvelteKit: Mit JavaScript wird es ohne Neuladen abgesendet. Ohne JavaScript funktioniert es weiterhin. |
+| `+error.svelte` | Fehlerseite mit reaktivem `page.status` und `page.error` aus `$app/state`. Ein HTTP-404-Fehler wird nicht als leerer Chat dargestellt. |
+| `navigating` aus `$app/state` | Zeigt eine laufende clientseitige Navigation an. Geeignet für einen allgemeinen Fortschrittsindikator, nicht für das initiale SSR. |
+| `$derived(data.chatId)` | Der aktive Chat wird aus der URL abgeleitet. SvelteKit kann die Seite beim Wechsel des Parameters wiederverwenden und `data` aktualisieren. |
+| `afterNavigate` | Löscht den Entwurf nach einer Navigation. Nachrichten bleiben im lokalen Seiten-State beim Chatwechsel erhalten, gehen beim Neuladen oder beim Wechsel zu `/about` verloren. |
 
-Svelte — компилятор UI, SvelteKit добавляет routing, SSR и серверную часть.
-По умолчанию страницы рендерятся на сервере и гидратируются в браузере.
-Это не React Server Components: `'use client'` здесь не нужен.
-Runes — синтаксис компилятора, а не импортируемые hooks.
-Локальный `$state` не заменяет постоянное хранилище; mutable state в module scope
-на сервере может случайно стать общим для разных пользователей.
+Svelte ist ein UI-Compiler; SvelteKit ergänzt Routing, SSR und Serverfunktionen.
+Seiten werden standardmäßig serverseitig gerendert und im Browser hydriert.
+Das ist nicht das React-Server-Components-Modell; ein `'use client'` ist hier nicht nötig.
+Runes sind Compiler-Syntax und keine importierten Hooks.
+Lokaler `$state` ist kein dauerhafter Speicher. Veränderbarer Modul-State auf dem Server
+könnte versehentlich zwischen verschiedenen Nutzern geteilt werden.
 
-Серверный `load` ищет чат по `chatId` в [createChats](src/lib/chats.ts) и отдаёт
-странице ID и заголовок для `<h1>` и `<svelte:head>`. Сообщения — отдельный изменяемый клиентский `$state`, созданный из
-того же учебного набора: смена URL сохраняет его, пока страница смонтирована.
-Это mock-данные, не база и не API. Маршрут страницы — [chats/[chatId]/+page.svelte](src/routes/chats/[chatId]/+page.svelte),
-проверка ID и загрузка — в [+page.server.ts](src/routes/chats/[chatId]/+page.server.ts).
-Общая страница ошибок — [+error.svelte](src/routes/+error.svelte). В layout используется
-`navigating` из `$app/state` для тонкого индикатора перехода. Локальный `load` синхронный,
-поэтому индикатор может мелькнуть слишком быстро. Искусственную задержку не добавляем;
-при реальном медленном запросе он будет полезнее. Это состояние клиентской навигации,
-не fallback для первоначального SSR.
+Der serverseitige `load` sucht den Chat anhand von `chatId` in [createChats](src/lib/chats.ts)
+und übergibt ID und Titel an die Seite. Die Nachrichten liegen separat in einem veränderbaren
+clientseitigen `$state`, der aus denselben Beispieldaten erstellt wird. Beim Wechsel zwischen
+Chats bleibt er erhalten, solange die Seite gemountet ist. Es handelt sich um Beispieldaten,
+nicht um eine Datenbank oder API. Die Chatroute liegt in [chats/[chatId]/+page.svelte](src/routes/chats/[chatId]/+page.svelte),
+die Prüfung und Datenladung in [+page.server.ts](src/routes/chats/[chatId]/+page.server.ts).
 
-Форма `/forms` показывает named action `?/validate`, серверную валидацию и `use:enhance`.
-Проверяются имя длиной 2–40 символов и непустое сообщение до 280 символов;
-ошибки возвращаются со статусом 400, а введённые значения остаются в форме.
-Успех означает только успешную проверку: данные нигде не сохраняются и не отправляются.
+Die Fehlerseite befindet sich in [+error.svelte](src/routes/+error.svelte). Das Layout verwendet
+`navigating` aus `$app/state` für einen schmalen Navigationsindikator. Der lokale `load` ist
+synchron, daher kann der Indikator nur kurz aufblinken. Es wird keine künstliche Verzögerung
+hinzugefügt. Bei echten langsamen Anfragen ist er hilfreicher; für das initiale SSR ist er kein
+Fallback.
 
-## Официальные материалы
+Das Formular unter `/forms` demonstriert die benannte Action `?/validate`, serverseitige
+Validierung und `use:enhance`. Geprüft werden ein Name mit 2–40 Zeichen und eine nicht leere
+Nachricht mit höchstens 280 Zeichen. Fehler werden mit Status 400 zurückgegeben; die Eingaben
+bleiben im Formular erhalten. Bei Erfolg ist nur die Validierung erfolgreich: Die Daten werden
+weder gespeichert noch versendet.
 
-- [Интерактивный tutorial](https://svelte.dev/tutorial/svelte/welcome-to-svelte)
+## Offizielle Dokumentation
+
+- [Interaktives Tutorial](https://svelte.dev/tutorial/svelte/welcome-to-svelte)
 - [$state](https://svelte.dev/docs/svelte/$state)
 - [$derived](https://svelte.dev/docs/svelte/$derived)
 - [$props](https://svelte.dev/docs/svelte/$props)
 - [$bindable](https://svelte.dev/docs/svelte/$bindable)
 - [Snippets](https://svelte.dev/docs/svelte/snippet)
-- [SvelteKit routing](https://svelte.dev/docs/kit/routing)
+- [SvelteKit Routing](https://svelte.dev/docs/kit/routing)

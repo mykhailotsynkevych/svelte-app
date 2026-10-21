@@ -73,22 +73,22 @@
 		<MessageComposer bind:draft disabled={!activeChat} onSend={sendMessage} />
 	</main>
 
-	<aside class="lesson" aria-labelledby="lesson-title" lang="ru">
-		<p class="eyebrow">Сравниваем с React</p>
-		<h2 id="lesson-title">Серверная загрузка</h2>
+	<aside class="lesson" aria-labelledby="lesson-title" lang="de">
+		<p class="eyebrow">Vergleich mit React</p>
+		<h2 id="lesson-title">Serverseitiges Laden</h2>
 		<dl>
 			<dt><code>+page.server.ts</code></dt>
-			<dd>load выполняется только на сервере: находит чат по chatId и передаёт заголовок странице.</dd>
+			<dd><code>load</code> wird nur auf dem Server ausgeführt: Die Funktion sucht den Chat anhand von <code>chatId</code> und übergibt den Titel an die Seite.</dd>
 			<dt><code>PageServerLoad</code></dt>
-			<dd>Типизированная load получает params из URL. Возвращённые chatId и title приходят в страницу через data.</dd>
+			<dd>Die typisierte <code>load</code>-Funktion erhält <code>params</code> aus der URL. Die zurückgegebenen Werte <code>chatId</code> und <code>title</code> werden der Seite über <code>data</code> übergeben.</dd>
 			<dt><code>error(404, ...)</code></dt>
-			<dd>Неизвестный ID даёт HTTP 404, а не пустой список.</dd>
+			<dd>Eine unbekannte ID führt zu HTTP 404 statt zu einer leeren Liste.</dd>
 			<dt><code>+error.svelte</code></dt>
-			<dd>Общая страница ошибки показывает статус и сообщение. Открой /chats/unknown, чтобы увидеть 404.</dd>
+			<dd>Die allgemeine Fehlerseite zeigt den Status und die Meldung. Öffne <code>/chats/unknown</code>, um den 404-Fehler zu sehen.</dd>
 			<dt><code>$app/state → navigating</code></dt>
-			<dd>В layout показывает, что клиентский переход ещё выполняется. При полной первой загрузке это не индикатор SSR.</dd>
-			<dt><code>Почему полоса может мелькнуть?</code></dt>
-			<dd>Локальная load очень быстрая и синхронная. Не добавляем искусственную задержку; на медленной сети индикатор будет заметнее.</dd>
+			<dd>Im Layout zeigt <code>navigating</code> an, dass ein clientseitiger Seitenwechsel noch läuft. Beim ersten vollständigen Laden ist es kein SSR-Ladeindikator.</dd>
+			<dt>Warum ist der Balken manchmal nur kurz zu sehen?</dt>
+			<dd>Die lokale <code>load</code>-Funktion ist synchron und sehr schnell. Es gibt keine künstliche Verzögerung; bei einer langsamen Netzwerkverbindung wäre der Indikator deutlicher zu sehen.</dd>
 		</dl>
 	</aside>
 </div>

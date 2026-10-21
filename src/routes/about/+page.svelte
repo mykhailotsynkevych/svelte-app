@@ -1,45 +1,47 @@
 <svelte:head>
-  <title>About Project | Svelte Lab</title>
+  <title>Über das Projekt | Svelte Lab</title>
   <meta
     name="description"
-    content="A local learning workspace for exploring Svelte 5 from a React background."
+    content="Ein Lernprojekt, um Svelte 5 ausgehend von React kennenzulernen."
   />
 </svelte:head>
 
 <div class="about">
   <header>
-    <a href="/" class="back-link">← Back to Workspace</a>
-    <h1>About Svelte <span>Lab</span></h1>
+    <a href="/" class="back-link">← Zurück zum Workspace</a>
+    <h1>Über Svelte <span>Lab</span></h1>
   </header>
   <main>
-    <p>
-      This is a local learning workspace for exploring Svelte 5 from a React
-      background.
+    <p lang="de">
+      Dieses lokale Lernprojekt hilft dabei, Svelte 5 ausgehend von React zu erkunden.
+      Es verbindet einen kleinen Chat-Workspace mit Beispielen für SvelteKit-Routing
+      und serverseitige Formularvalidierung.
     </p>
-    <section lang="ru" aria-labelledby="concepts-title">
-      <h2 id="concepts-title">Что уже изучили</h2>
+    <section lang="de" aria-labelledby="concepts-title">
+      <h2 id="concepts-title">Bisher behandelte Themen</h2>
       <ul>
-        <li><code>$state</code> — реактивное состояние без setter, включая глубокую реактивность обычных объектов и массивов.</li>
-        <li><code>$derived</code> — вычисляемые значения с автоматическим отслеживанием зависимостей, без лишнего state и эффектов.</li>
-        <li><code>onclick</code> и <code>onsubmit</code> — обработчики событий; <code>preventDefault()</code> предотвращает стандартную отправку формы.</li>
-        <li><code>bind:value</code> — двусторонняя привязка значения поля ввода.</li>
-        <li><code>$props()</code> — типизированные входные свойства, необязательные props и значения по умолчанию.</li>
-        <li>Callback props — ребёнок сообщает о действии, родитель изменяет состояние, как при lifting state up в React.</li>
-        <li><code>$bindable()</code> и <code>bind:draft</code> — явно разрешённая двусторонняя привязка prop между компонентами.</li>
-        <li><code>{'{#each messages as message, index (message.id)}'}</code> — перебор со стабильным ключом; индекс используем для нумерации, а не идентификации.</li>
-        <li><code>children</code>, <code>Snippet</code> и <code>{'{@render children()}'}</code> — композиция через фрагменты шаблона.</li>
-        <li>Именованные snippets с параметрами — аналог render props в React; <code>Snippet&lt;[Message, number]&gt;</code> задаёт типы аргументов.</li>
-        <li>Scoped CSS — стили принадлежат компоненту, в котором объявлена разметка; глобальные правила задаются явно.</li>
-        <li>Файловый routing — <code>src/routes/about/+page.svelte</code> создаёт страницу <code>/about</code>; для навигации используются обычные ссылки.</li>
-        <li><code>&lt;svelte:head&gt;</code> — заголовок вкладки и метаданные страницы.</li>
-        <li><code>+layout.svelte</code> — общий каркас страниц; при клиентских переходах общий layout сохраняется, при перезагрузке создаётся заново.</li>
-        <li><code>/chats/[chatId]</code> — динамический маршрут: выбор чата находится в URL, а ссылки поддерживают прямое открытие и историю браузера.</li>
-        <li><code>load</code> в <code>+page.server.ts</code> — выполняется только на сервере, читает <code>params.chatId</code>, находит чат и возвращает <code>chatId</code> с заголовком в prop <code>data</code>; неизвестный ID вызывает HTTP 404. Возвращённые данные доступны браузеру — секреты туда не включаем.</li>
-        <li>Universal <code>+page.ts</code> — может выполняться и на сервере, и в браузере; подходит для загрузки без серверных секретов.</li>
-        <li><code>+error.svelte</code> и <code>$app/state</code> — показывают статус и сообщение ошибки, например 404 для неизвестного chatId.</li>
-        <li><code>navigating</code> из <code>$app/state</code> — состояние незавершённого клиентского перехода; используется для общего индикатора навигации.</li>
-        <li>Form actions, <code>request.formData()</code>, <code>fail(400, ...)</code> и <code>use:enhance</code> — серверная валидация с сохранением введённых значений и отправкой без перезагрузки.</li>
-        <li><code>$derived(data.chatId)</code> — отслеживает новый параметр при переиспользовании страницы; <code>afterNavigate</code> очищает черновик после перехода.</li>
+        <li><code>$state</code> — reaktiver Zustand ohne Setter, einschließlich tiefer Reaktivität einfacher Objekte und Arrays.</li>
+        <li><code>$derived</code> — berechnete Werte mit automatisch erkannten Abhängigkeiten, ohne zusätzlichen State oder Effect.</li>
+        <li><code>onclick</code> und <code>onsubmit</code> — Event-Handler; <code>preventDefault()</code> verhindert das Standardverhalten eines Formulars.</li>
+        <li><code>bind:value</code> — Zwei-Wege-Bindung eines Eingabefelds.</li>
+        <li><code>$props()</code> — typisierte Props mit optionalen Eigenschaften und Standardwerten.</li>
+        <li>Callback-Props — die Kindkomponente meldet eine Aktion, die Elternkomponente aktualisiert den State; ähnlich wie „Lifting State Up“ in React.</li>
+        <li><code>$bindable()</code> und <code>bind:draft</code> — ausdrücklich erlaubte Zwei-Wege-Bindung eines Props zwischen Komponenten.</li>
+        <li><code>{'{#each messages as message, index (message.id)}'}</code> — keyed list mit stabilem Schlüssel; der Index dient der Nummerierung, nicht der Identifikation.</li>
+        <li><code>children</code>, <code>Snippet</code> und <code>{'{@render children()}'}</code> — Komposition mit Template-Fragmenten.</li>
+        <li>Benannte Snippets mit Parametern — ähnlich Render-Props in React; <code>Snippet&lt;[Message, number]&gt;</code> typisiert die Argumente.</li>
+        <li>Scoped CSS — Styles gehören zur Komponente, in der das Markup definiert ist; globale Regeln werden ausdrücklich festgelegt.</li>
+        <li>File-based Routing — <code>src/routes/about/+page.svelte</code> erstellt die Seite <code>/about</code>; navigiert wird mit normalen Links.</li>
+        <li><code>&lt;svelte:head&gt;</code> — Seitentitel und Metadaten.</li>
+        <li><code>+layout.svelte</code> — gemeinsamer Seitenrahmen, der bei clientseitigen Übergängen erhalten bleibt und beim Neuladen neu erstellt wird.</li>
+        <li><code>/chats/[chatId]</code> — dynamische Route: Die Chat-Auswahl steckt in der URL; Links ermöglichen Direktaufruf und Browser-Verlauf.</li>
+        <li><code>load</code> in <code>+page.server.ts</code> — läuft nur auf dem Server, liest <code>params.chatId</code>, findet den Chat und gibt ID sowie Titel über <code>data</code> zurück. Unbekannte IDs führen zu HTTP 404.</li>
+        <li>Universal-<code>+page.ts</code> — kann auf dem Server und im Browser laufen; geeignet für Datenladen ohne serverseitige Geheimnisse.</li>
+        <li><code>+error.svelte</code> und <code>$app/state</code> — stellen Fehlerstatus und Meldung dar, zum Beispiel 404 bei einer unbekannten Chat-ID.</li>
+        <li><code>navigating</code> aus <code>$app/state</code> — zeigt einen laufenden clientseitigen Navigationsvorgang an.</li>
+        <li>Form Actions, <code>request.formData()</code>, <code>fail(400, ...)</code> und <code>use:enhance</code> — serverseitige Validierung mit Erhalt der Eingaben und optionalem Absenden ohne Neuladen.</li>
+        <li><code>$derived(data.chatId)</code> — reagiert auf einen neuen Routenparameter; <code>afterNavigate</code> leert den Entwurf nach der Navigation.</li>
+        <li>Serverseitige Formularvalidierung — prüft Eingaben, gibt feldbezogene Fehler zurück und speichert oder versendet keine Daten.</li>
       </ul>
     </section>
   </main>

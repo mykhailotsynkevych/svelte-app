@@ -16,13 +16,13 @@ export const actions = {
 		const message = values.message.trim();
 
 		if (name.length < 2 || name.length > 40) {
-			errors.name = 'Имя должно содержать от 2 до 40 символов.';
+			errors.name = 'Der Name muss zwischen 2 und 40 Zeichen lang sein.';
 		}
 
 		if (!message) {
-			errors.message = 'Введите сообщение.';
+			errors.message = 'Bitte gib eine Nachricht ein.';
 		} else if (message.length > 280) {
-			errors.message = 'Сообщение не должно превышать 280 символов.';
+			errors.message = 'Die Nachricht darf höchstens 280 Zeichen lang sein.';
 		}
 
 		if (Object.keys(errors).length > 0) {
